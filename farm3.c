@@ -58,3 +58,7 @@ int main(void) {
             printf("Ошибка: введите число от 0 до 6.\n");
             continue;
         }
+switch (choice) {
+            case 0:
+                printf("Выход из игры.\n");
+                return 0;
