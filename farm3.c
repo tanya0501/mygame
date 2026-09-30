@@ -177,5 +177,12 @@ switch (choice) {
                 }
                 break;
             }
-
    
+            default:
+                printf("Ошибка: выберите пункт от 0 до 6.\n");
+                break;
+        }
+    }
+
+    return 0;
+}
