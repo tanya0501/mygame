@@ -62,3 +62,11 @@ switch (choice) {
             case 0:
                 printf("Выход из игры.\n");
                 return 0;
+           
+            case 1: {
+                // Форматируем часы с ведущим нулём: 8 -> 08
+                printf("Текущее время: День %d, %02d:00\n", current_day, current_hour);
+                break;
+            }
+
+                
