@@ -98,4 +98,31 @@ switch (choice) {
                 }
                 break;
             }
+            
+            case 4: {
+                int slot_index, item_id;
+                printf("Введите индекс слота (0–%d): ", INVENTORY_SIZE - 1);
+                if (scanf("%d", &slot_index) != 1) {
+                    int c; while ((c = getchar()) != '\n' && c != EOF);
+                    printf("Ошибка: индекс должен быть числом.\n");
+                    break;
+                }
+
+                if (slot_index < 0 || slot_index >= INVENTORY_SIZE) {
+                    printf("Ошибка: индекс слота должен быть от 0 до %d.\n", INVENTORY_SIZE - 1);
+                    break;
+                }
+
+                printf("Введите ID предмета (0–9): ");
+                if (scanf("%d", &item_id) != 1 || item_id < 0 || item_id > 9) {
+                    int c; while ((c = getchar()) != '\n' && c != EOF);
+                    printf("Ошибка: ID предмета должен быть числом от 0 до 9.\n");
+                    break;
+                }
+
+                inventory[slot_index] = item_id;
+                printf("Предмет ID %d помещён в слот %d.\n", item_id, slot_index);
+                break;
+            }
+
    
