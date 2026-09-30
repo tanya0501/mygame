@@ -68,5 +68,27 @@ switch (choice) {
                 printf("Текущее время: День %d, %02d:00\n", current_day, current_hour);
                 break;
             }
+            
+             case 2: {
+                int work_hours;
+                printf("Сколько часов вы хотите потратить на работу? ");
+                if (scanf("%d", &work_hours) != 1 || work_hours < 0) {
+                    int c;
+                    while ((c = getchar()) != '\n' && c != EOF);
+                    printf("Ошибка: введите неотрицательное число часов.\n");
+                    break;
+                }
+
+                current_hour += work_hours;
+
+                // Корректный перевод дней при превышении 24 часов
+                while (current_hour >= 24) {
+                    current_hour -= 24;
+                    current_day++;
+                }
+                printf("Время промотано. Теперь: День %d, %02d:00\n", current_day, current_hour);
+                break;
+            }
+
 
                 
