@@ -123,6 +123,27 @@ switch (choice) {
                 inventory[slot_index] = item_id;
                 printf("Предмет ID %d помещён в слот %d.\n", item_id, slot_index);
                 break;
+            } 
+            
+            case 5: {
+                int slot_index;
+                printf("Введите индекс слота для удаления предмета (0–%d): ", INVENTORY_SIZE - 1);
+                if (scanf("%d", &slot_index) != 1) {
+                    int c; while ((c = getchar()) != '\n' && c != EOF);
+                    printf("Ошибка: индекс должен быть числом.\n");
+                    break;
+                }
+
+                if (slot_index < 0 || slot_index >= INVENTORY_SIZE) {
+                    printf("Ошибка: индекс слота должен быть от 0 до %d.\n", INVENTORY_SIZE - 1);
+                    break;
+                }
+
+                int old_id = inventory[slot_index];
+                inventory[slot_index] = EMPTY_SLOT;
+                printf("Предмет ID %d удалён из слота %d.\n", old_id, slot_index);
+                break;
             }
+
 
    
