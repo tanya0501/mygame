@@ -90,5 +90,12 @@ switch (choice) {
                 break;
             }
 
-
-                
+            case 3: {
+                printf("Инвентарь:\n");
+                for (int i = 0; i < INVENTORY_SIZE; ++i) {
+                    const char* name = get_item_name(inventory[i]);
+                    printf("Слот %d: [%d] (%s)\n", i, inventory[i], name);
+                }
+                break;
+            }
+   
