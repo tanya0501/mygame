@@ -145,5 +145,37 @@ switch (choice) {
                 break;
             }
 
+			case 6: {
+                int target_id;
+                printf("Введите ID предмета для ревизии (0–9): ");
+                if (scanf("%d", &target_id) != 1 || target_id < 0 || target_id > 9) {
+                    int c; while ((c = getchar()) != '\n' && c != EOF);
+                    printf("Ошибка: ID должен быть числом от 0 до 9.\n");
+                    break;
+                }
+
+                int count = 0;
+                // Сначала считаем количество, чтобы вывести красиво
+                for (int i = 0; i < INVENTORY_SIZE; ++i) {
+                    if (inventory[i] == target_id) {
+                        count++;
+                    }
+                }
+
+                printf("Количество предметов ID %d: %d\n", target_id, count);
+
+                if (count > 0) {
+                    printf("Позиции слотов: ");
+                    for (int i = 0; i < INVENTORY_SIZE; ++i) {
+                        if (inventory[i] == target_id) {
+                            printf("%d ", i);
+                        }
+                    }
+                    printf("\n");
+                } else {
+                    printf("Таких предметов в инвентаре нет.\n");
+                }
+                break;
+            }
 
    
