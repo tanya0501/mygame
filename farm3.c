@@ -40,8 +40,22 @@ void load_item_catalog(void) {
             item_names[i][MAX_NAME_LEN - 1] = '\0';
         }
         return;
-    }    
+}    
 
+	int id;
+    char name[MAX_NAME_LEN];
+    int loaded_count = 0;
+    // Читаем ID и строку до конца строки (исключая перенос строки)
+    while (fscanf(file, "%d %[^\n]", &id, name) == 2) {
+        if (id >= 0 && id < MAX_ITEMS) {
+            strncpy(item_names[id], name, MAX_NAME_LEN - 1);
+            item_names[id][MAX_NAME_LEN - 1] = '\0';
+            loaded_count++;
+        }
+    }
+    fclose(file);
+    printf("Успешно загружено предметов из каталога: %d\n", loaded_count);
+}
 int main(void) {
     int current_day = 1;
     int current_hour = 8;
