@@ -99,19 +99,9 @@ int main(void) {
             printf("Ошибка: введите число от 0 до 8.\n");
             continue;
         }
-
-        int choice;
-        // Защита от неправильного ввода: scanf возвращает количество успешно прочитанных значений
-        if (scanf("%d", &choice) != 1) {
-            // Если ввели не число — очищаем буфер и выводим ошибку
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);
-            printf("Ошибка: введите число от 0 до 6.\n");
-            continue;
-        }
 switch (choice) {
             case 0:
-                printf("Выход из игры.\n");
+                printf("Выход из игры. До встречи, %s!\n", farmer_name);
                 return 0;
            
             case 1: {
@@ -142,19 +132,19 @@ switch (choice) {
             }
 
             case 3: {
-                printf("Инвентарь:\n");
+                 printf("Инвентарь:\n");
                 for (int i = 0; i < INVENTORY_SIZE; ++i) {
-                    const char* name = get_item_name(inventory[i]);
-                    printf("Слот %d: [%d] (%s)\n", i, inventory[i], name);
+                    int id = inventory[i];
+                    printf("Слот %d: [%d] - %s\n", i, id, item_names[id]);
                 }
                 break;
             }
             
             case 4: {
-                int slot_index, item_id;
-                printf("Введите индекс слота (0-%d): ", INVENTORY_SIZE - 1);
+               int slot_index, item_id;
+                printf("Введите индекс слота (0–%d): ", INVENTORY_SIZE - 1);
                 if (scanf("%d", &slot_index) != 1) {
-                    int c; while ((c = getchar()) != '\n' && c != EOF);
+                    clear_input_buffer();
                     printf("Ошибка: индекс должен быть числом.\n");
                     break;
                 }
@@ -164,15 +154,15 @@ switch (choice) {
                     break;
                 }
 
-                printf("Введите ID предмета (0-9): ");
+                printf("Введите ID предмета (0–9): ");
                 if (scanf("%d", &item_id) != 1 || item_id < 0 || item_id > 9) {
-                    int c; while ((c = getchar()) != '\n' && c != EOF);
+                    clear_input_buffer();
                     printf("Ошибка: ID предмета должен быть числом от 0 до 9.\n");
                     break;
                 }
 
                 inventory[slot_index] = item_id;
-                printf("Предмет ID %d помещён в слот %d.\n", item_id, slot_index);
+                printf("Предмет \"%s\" (ID %d) помещён в слот %d.\n", item_names[item_id], item_id, slot_index);
                 break;
             } 
             
@@ -206,7 +196,6 @@ switch (choice) {
                 }
 
                 int count = 0;
-                // Сначала считаем количество, чтобы вывести красиво
                 for (int i = 0; i < INVENTORY_SIZE; ++i) {
                     if (inventory[i] == target_id) {
                         count++;
@@ -237,3 +226,25 @@ switch (choice) {
 
     return 0;
 }
+			case 7: {
+                char search_name[MAX_NAME_LEN];
+                printf("Введите название предмета для поиска: ");
+                clear_input_buffer(); // Очищаем буфер после предыдущего ввода scanf
+                
+                if (fgets(search_name, sizeof(search_name), stdin) != NULL) {
+                    search_name[strcspn(search_name, "\n")] = '\0';
+                }
+
+                // 1. Ищем ID по названию в нашем каталоге строк
+                int found_id = -1;
+                for (int i = 0; i < MAX_ITEMS; i++) {
+                    if (strcmp(item_names[i], search_name) == 0) {
+                        found_id = i;
+                        break;
+                    }
+                }
+
+                if (found_id == -1) {
+                    printf("Предмет с названием \"%s\" не существует в каталоге.\n", search_name);
+                    break;
+                }
