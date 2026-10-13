@@ -248,3 +248,21 @@ switch (choice) {
                     printf("Предмет с названием \"%s\" не существует в каталоге.\n", search_name);
                     break;
                 }
+                
+                 // 2. Ищем этот ID внутри инвентаря
+                int count = 0;
+                printf("Результаты поиска для \"%s\" (ID %d):\n", search_name, found_id);
+                for (int i = 0; i < INVENTORY_SIZE; i++) {
+                    if (inventory[i] == found_id) {
+                        printf("-> Найден в слоте %d\n", i);
+                        count++;
+                    }
+                }
+
+                if (count == 0) {
+                    printf("Этого предмета сейчас нет в рюкзаке.\n");
+                } else {
+                    printf("Всего найдено: %d шт.\n", count);
+                }
+                break;
+            }
