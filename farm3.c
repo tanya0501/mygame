@@ -1,6 +1,11 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define INVENTORY_SIZE 10
+#define MAX_ITEMS 10
+#define MAX_NAME_LEN 32
+
 #define EMPTY_SLOT 0
 #define ITEM_WOOD 1
 #define ITEM_STONE 2
@@ -12,21 +17,30 @@
 #define ITEM_TOOL 8
 #define ITEM_GEMS 9
 
-// Вспомогательная функция: получить строку названия предмета по ID
-const char* get_item_name(int id) {
-    switch (id) {
-        case ITEM_WOOD:   return "Дерево";
-        case ITEM_STONE:  return "Камень";
-        case ITEM_SEEDS:  return "Семена";
-        case ITEM_IRON:   return "Железо";
-        case ITEM_CLOTH:  return "Ткань";
-        case ITEM_FOOD:   return "Еда";
-        case ITEM_POTION: return "Зелье";
-        case ITEM_TOOL:   return "Инструмент";
-        case ITEM_GEMS:   return "Самоцветы";
-        default:          return "Пусто";
-    }
+// массив для хранения названий предметов
+char item_names[MAX_ITEMS][MAX_NAME_LEN];
+
+// для безопасной очистки буфера ввода после scanf
+void clear_input_buffer(void) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
+// Загрузка названий предметов из файла 
+void load_item_catalog(void) {
+    FILE *file = fopen("items.txt", "r");
+    if (file == NULL) {
+        printf("[Предупреждение]: Файл items.txt не найден. Загружены названия по умолчанию.\n");
+        // Заполнение резервными именами, если файла нет
+        const char* default_names[MAX_ITEMS] = {
+            "Пусто", "Дерево", "Камень", "Семена", "Железо", 
+            "Ткань", "Еда", "Зелье", "Инструмент", "Самоцветы"
+        };
+        for (int i = 0; i < MAX_ITEMS; i++) {
+            strncpy(item_names[i], default_names[i], MAX_NAME_LEN - 1);
+            item_names[i][MAX_NAME_LEN - 1] = '\0';
+        }
+        return;
+    }    
 
 int main(void) {
     int current_day = 1;
@@ -101,7 +115,7 @@ switch (choice) {
             
             case 4: {
                 int slot_index, item_id;
-                printf("Введите индекс слота (0–%d): ", INVENTORY_SIZE - 1);
+                printf("Введите индекс слота (0-%d): ", INVENTORY_SIZE - 1);
                 if (scanf("%d", &slot_index) != 1) {
                     int c; while ((c = getchar()) != '\n' && c != EOF);
                     printf("Ошибка: индекс должен быть числом.\n");
@@ -113,7 +127,7 @@ switch (choice) {
                     break;
                 }
 
-                printf("Введите ID предмета (0–9): ");
+                printf("Введите ID предмета (0-9): ");
                 if (scanf("%d", &item_id) != 1 || item_id < 0 || item_id > 9) {
                     int c; while ((c = getchar()) != '\n' && c != EOF);
                     printf("Ошибка: ID предмета должен быть числом от 0 до 9.\n");
@@ -127,7 +141,7 @@ switch (choice) {
             
             case 5: {
                 int slot_index;
-                printf("Введите индекс слота для удаления предмета (0–%d): ", INVENTORY_SIZE - 1);
+                printf("Введите индекс слота для удаления предмета (0-%d): ", INVENTORY_SIZE - 1);
                 if (scanf("%d", &slot_index) != 1) {
                     int c; while ((c = getchar()) != '\n' && c != EOF);
                     printf("Ошибка: индекс должен быть числом.\n");
@@ -147,7 +161,7 @@ switch (choice) {
 
 			case 6: {
                 int target_id;
-                printf("Введите ID предмета для ревизии (0–9): ");
+                printf("Введите ID предмета для ревизии (0-9): ");
                 if (scanf("%d", &target_id) != 1 || target_id < 0 || target_id > 9) {
                     int c; while ((c = getchar()) != '\n' && c != EOF);
                     printf("Ошибка: ID должен быть числом от 0 до 9.\n");
