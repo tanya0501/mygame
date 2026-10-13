@@ -56,7 +56,9 @@ void load_item_catalog(void) {
     fclose(file);
     printf("Успешно загружено предметов из каталога: %d\n", loaded_count);
 }
+
 int main(void) {
+    char farmer_name[32];
     int current_day = 1;
     int current_hour = 8;
 
@@ -65,7 +67,17 @@ int main(void) {
         ITEM_CLOTH, ITEM_FOOD, EMPTY_SLOT, EMPTY_SLOT,
         EMPTY_SLOT, EMPTY_SLOT
     };
-
+// 1. Приветствие и ввод имени
+    printf("Добро пожаловать на ферму!\n");
+    printf("Введите имя вашего фермера: ");
+    if (fgets(farmer_name, sizeof(farmer_name), stdin) != NULL) {
+        // Удаляем символ новой строки \n, если он есть
+        farmer_name[strcspn(farmer_name, "\n")] = '\0';
+    }
+    if (strlen(farmer_name) == 0) {
+        strcpy(farmer_name, "Безымянный фермер");
+    }
+    
     while (1) {
         printf("\n--- МЕНЮ ---\n");
         printf("[0] Выход\n");
