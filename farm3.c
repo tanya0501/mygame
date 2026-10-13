@@ -142,7 +142,7 @@ switch (choice) {
             
             case 4: {
                int slot_index, item_id;
-                printf("Введите индекс слота (0–%d): ", INVENTORY_SIZE - 1);
+                printf("Введите индекс слота (0-%d): ", INVENTORY_SIZE - 1);
                 if (scanf("%d", &slot_index) != 1) {
                     clear_input_buffer();
                     printf("Ошибка: индекс должен быть числом.\n");
@@ -154,7 +154,7 @@ switch (choice) {
                     break;
                 }
 
-                printf("Введите ID предмета (0–9): ");
+                printf("Введите ID предмета (0-9): ");
                 if (scanf("%d", &item_id) != 1 || item_id < 0 || item_id > 9) {
                     clear_input_buffer();
                     printf("Ошибка: ID предмета должен быть числом от 0 до 9.\n");
@@ -201,9 +201,7 @@ switch (choice) {
                         count++;
                     }
                 }
-
                 printf("Количество предметов ID %d: %d\n", target_id, count);
-
                 if (count > 0) {
                     printf("Позиции слотов: ");
                     for (int i = 0; i < INVENTORY_SIZE; ++i) {
@@ -217,15 +215,6 @@ switch (choice) {
                 }
                 break;
             }
-   
-            default:
-                printf("Ошибка: выберите пункт от 0 до 6.\n");
-                break;
-        }
-    }
-
-    return 0;
-}
 			case 7: {
                 char search_name[MAX_NAME_LEN];
                 printf("Введите название предмета для поиска: ");
@@ -248,8 +237,8 @@ switch (choice) {
                     printf("Предмет с названием \"%s\" не существует в каталоге.\n", search_name);
                     break;
                 }
-                
-                 // 2. Ищем этот ID внутри инвентаря
+
+                // 2. Ищем этот ID внутри инвентаря
                 int count = 0;
                 printf("Результаты поиска для \"%s\" (ID %d):\n", search_name, found_id);
                 for (int i = 0; i < INVENTORY_SIZE; i++) {
@@ -266,3 +255,35 @@ switch (choice) {
                 }
                 break;
             }
+
+            case 8: {
+                FILE *diary = fopen("diary.txt", "a");
+                if (diary == NULL) {
+                    printf("Ошибка: не удалось открыть или создать дневник (diary.txt).\n");
+                    break;
+                }
+
+                // Запись заголовка состояния
+                fprintf(diary, "--- ЗАПИСЬ В ДНЕВНИКЕ ---\n");
+                fprintf(diary, "Фермер: %s | День %d | Время %02d:00\n", farmer_name, current_day, current_hour);
+                fprintf(diary, "Содержимое рюкзака:\n");
+                
+                for (int i = 0; i < INVENTORY_SIZE; i++) {
+                    int id = inventory[i];
+                    fprintf(diary, "  Слот %d: [%d] - %s\n", i, id, item_names[id]);
+                }
+                fprintf(diary, "-------------------------\n\n");
+
+                fclose(diary);
+                printf("Состояние успешно зафиксировано в дневнике фермера (diary.txt)!\n");
+                break;
+            }
+
+            default:
+                printf("Ошибка: выберите пункт от 0 до 8.\n");
+                break;
+        } // Конец конструкции switch
+    } // Конец цикла while(1)
+
+    return 0;
+}
